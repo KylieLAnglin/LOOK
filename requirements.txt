@@ -1,0 +1,13 @@
+# python packages
+numpy
+pandas
+ipykernel
+python-docx
+openpyxl
+
+
+# formatting
+black
+
+# testing
+pytest
