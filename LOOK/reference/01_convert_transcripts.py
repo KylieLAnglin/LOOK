@@ -3,6 +3,7 @@ import os
 import re
 import fnmatch
 import collections
+import pandas as pd
 
 import pandas as pd
 import docx
@@ -82,6 +83,10 @@ for filename in files:
             for speaker in transcript_df.speaker
         ]
         transcript_df["speaker"] = speakers
+
+        transcript_df["speaker_coach"] = np.where(
+            transcript_df.speaker.str.contains("Coach")
+        )
         filename = filename[:-5]
         transcript_df_to_excel(
             transcript_df=transcript_df,
