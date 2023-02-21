@@ -104,3 +104,12 @@ coach_df = final_df[cols].groupby("coach").sum()
 coach_df.to_excel(DIR + "data/clean/move_counts_by_coach.xlsx")
 
 # %%
+cols = ["data_conversation"]
+for move in moves:
+    cols.append(move)
+
+conversation_df = final_df[cols].groupby("data_conversation").sum()
+
+coach_df.to_excel(DIR + "data/clean/move_counts_by_data_conversation.xlsx")
+
+# %%
