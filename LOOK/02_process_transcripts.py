@@ -10,7 +10,7 @@ from library import start
 
 # %%
 df = pd.read_csv(start.DATA_DIR + "clean/meta_data.csv")
-df = df.head(11)
+# df = df.head(11)
 # %%
 
 
@@ -69,7 +69,7 @@ def transcript_df_to_excel(transcript_df, excel_template: str, excel_file: str):
     row = 2
     col = 3
 
-    for text in transcript_df.original_text:
+    for text in transcript_df.without_brackets:
         ws.cell(row=row, column=col).value = text
         row = row + 1
 

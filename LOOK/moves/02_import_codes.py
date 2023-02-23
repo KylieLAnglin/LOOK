@@ -3,22 +3,13 @@ import pandas as pd
 import numpy as np
 import os
 
-# from moves.library import start
-
-# moves = [
-#     "1 TellBack Positive Evaluation",
-#     "2 Tellback Observation",
-#     "3 Tellforward Suggestion",
-#     "4 Tellforward Instruction",
-#     "5 Tellforward Demonstration",
-#     "6 Askforward Anticipation",
-#     "7 Practice",
-#     "8 Rapport Encouragement",
-# ]
 
 # %% Append all Coder 1 Week 1 Files
 DIR = "/Users/kylieanglin/Box Sync/Measuring Coaching Fidelity and Quality/-LOOK/"
 DIR_DATA = DIR + "annotations/completed/"
+
+meta_data = pd.read_csv(DIR + "data/clean/meta_data.csv")
+
 
 transcript_files = []
 for filename in os.listdir(DIR_DATA):
@@ -53,7 +44,21 @@ for filename in transcript_files:
 # %%
 transcript_df = transcript_df[~transcript_df["Move 1"].isnull()]
 
+cleaned_transcript_df = transcript_df[["Speaker", "Text", "Transcript"]]
+cleaned_transcript_df["transcript"] = cleaned_transcript_df.Transcript.str.replace(
+    ".xlsx", ""
+)
+cleaned_transcript_df = cleaned_transcript_df.merge(
+    meta_data, left_on="transcript", right_on="file"
+)
+cleaned_transcript_df = cleaned_transcript_df.rename(
+    columns={"Speaker": "speaker", "Text": "text"}
+)
+cleaned_transcript_df = cleaned_transcript_df[
+    ["transcript", "coach", "data_conversation", "speaker", "text"]
+]
 
+cleaned_transcript_df.to_csv(DIR + "data/clean/long_transcript_df.csv")
 # %%
 move_columns = [col for col in transcript_df.columns if col.startswith("Move")]
 moves = []
@@ -86,7 +91,6 @@ moves_df["Transcript"] = moves_df.Transcript.str.replace(".xlsx", "")
 grouped_df = moves_df.groupby(["Transcript"]).sum()
 
 # %%
-meta_data = pd.read_csv(DIR + "data/clean/meta_data.csv")
 
 final_df = grouped_df.merge(meta_data, left_index=True, right_on="file", how="left")
 
