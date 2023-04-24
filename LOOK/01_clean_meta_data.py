@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 from library import start
 
+
+np.random.seed(59242)
 # %%
 meta_data = pd.read_excel(start.DATA_DIR + "raw/LOOK Transcripts - ALL.xlsx")
 
